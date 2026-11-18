@@ -1,0 +1,57 @@
+table dim_model
+	lineageTag: a39fb34f-37db-45b3-82ab-75f709e5f725
+
+	column ModelKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 134619c3-9461-4b4b-a53a-81077782d613
+		summarizeBy: none
+		sourceColumn: ModelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Model
+		dataType: string
+		lineageTag: 5090482f-f769-4b7e-b06a-62c3a6584314
+		summarizeBy: none
+		sourceColumn: Model
+
+		annotation SummarizationSetBy = Automatic
+
+	column Business_Segment
+		dataType: string
+		lineageTag: b46f864b-19ef-48ca-b459-c3082865a11b
+		summarizeBy: none
+		sourceColumn: Business_Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Launch_Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 291188b9-c723-42d8-a103-7274da9b29b6
+		summarizeBy: none
+		sourceColumn: Launch_Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Target_Market_Tier
+		dataType: string
+		lineageTag: 5d6217c6-de5e-4f03-9a0d-4d17c5c7e216
+		summarizeBy: none
+		sourceColumn: Target_Market_Tier
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_model = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("E:\tesla_gobal_deliveries_analytics\data\processed\dim_model.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ModelKey", Int64.Type}, {"Model", type text}, {"Business_Segment", type text}, {"Launch_Year", Int64.Type}, {"Target_Market_Tier", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

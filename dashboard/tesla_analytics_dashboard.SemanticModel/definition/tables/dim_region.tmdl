@@ -1,0 +1,48 @@
+table dim_region
+	lineageTag: accf7ae0-f173-40cd-b473-a601698e37b5
+
+	column RegionKey
+		dataType: int64
+		formatString: 0
+		lineageTag: d1cbd58e-f86a-415d-85dd-5e75e78919bc
+		summarizeBy: none
+		sourceColumn: RegionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: ecd3b396-db9b-41c3-a1d7-b2644bde3f86
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region_Code
+		dataType: string
+		lineageTag: 1539037c-86c4-4ab7-bdac-aaea6a4322fe
+		summarizeBy: none
+		sourceColumn: Region_Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Operating_Scope
+		dataType: string
+		lineageTag: 48991314-c429-454d-9d1c-54a8b0087c27
+		summarizeBy: none
+		sourceColumn: Operating_Scope
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_region = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("E:\tesla_gobal_deliveries_analytics\data\processed\dim_region.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"RegionKey", Int64.Type}, {"Region", type text}, {"Region_Code", type text}, {"Operating_Scope", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

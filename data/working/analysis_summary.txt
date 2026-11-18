@@ -1,0 +1,9 @@
+TESLA GLOBAL DELIVERIES & OPERATIONS ANALYTICS: SUMMARY REPORT
+Generated: 2026-11-18 13:26:18.433016
+Total Deliveries: 28,013,288
+Total Production: 29,939,472
+Total Revenue: $2,302,800,272,805.09
+Quarter-End t-test p-value: 2.1056e-01
+Regional Pricing ANOVA p-value: 1.2162e-01
+Charging Station Pearson r: 0.0852 (p=4.7235e-06)
+Efficiency Shift p-value: 2.4437e-29

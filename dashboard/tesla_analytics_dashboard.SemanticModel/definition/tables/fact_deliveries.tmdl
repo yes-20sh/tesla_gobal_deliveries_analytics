@@ -1,0 +1,302 @@
+table fact_deliveries
+	lineageTag: 661f2c40-de1e-449d-93f5-cca2489d20bf
+
+	measure 'Total Deliveries' = SUM(fact_deliveries[Estimated_Deliveries])
+		formatString: #,0
+		displayFolder: 1 Executive Overview
+		lineageTag: d1de264b-9d80-43b3-a6fd-3b3664dda99d
+
+	measure 'Total Production' = SUM(fact_deliveries[Production_Units])
+		formatString: #,0
+		displayFolder: 1 Executive Overview
+		lineageTag: 774c01b4-2771-4473-a4b0-2618ee8ffddc
+
+	measure 'Est. Revenue' = SUM(fact_deliveries[Est_Revenue_USD])
+		formatString: \$#,0,,"M"
+		displayFolder: 1 Executive Overview
+		lineageTag: fd183f9f-a515-47d5-ae6f-700e88dafe76
+
+	measure 'Avg Selling Price' = DIVIDE([Est. Revenue], [Total Deliveries])
+		formatString: \$#,0
+		displayFolder: 1 Executive Overview
+		lineageTag: cca2c851-a758-4373-8544-7aee03c2883c
+
+	measure 'Delivery Efficiency' = DIVIDE([Total Deliveries], [Total Production])
+		formatString: 0.0%
+		displayFolder: 1 Executive Overview
+		lineageTag: 40f71529-7f5b-482c-ad67-f346c01cffb6
+
+	measure 'Inventory Gap' = [Total Production] - [Total Deliveries]
+		formatString: #,0
+		displayFolder: 1 Executive Overview
+		lineageTag: 610e0a5e-356b-48bf-a7af-84fae4e68399
+
+	measure 'Est. Revenue (KPI)' = VAR v = SUM(fact_deliveries[Est_Revenue_USD]) RETURN IF(ISBLANK(v), BLANK(), SWITCH(TRUE(), v >= 1E9, FORMAT(v / 1E9, "$#,0.0") & "B", v >= 1E6, FORMAT(v / 1E6, "$#,0.0") & "M", v >= 1E3, FORMAT(v / 1E3, "$#,0.0") & "K", FORMAT(v, "$#,0")))
+		displayFolder: 1 Executive Overview
+		lineageTag: 976308f7-a6cb-4d40-8759-73968c63c0dc
+
+	measure 'Avg Battery Capacity (kWh)' = AVERAGE(fact_deliveries[Battery_Capacity_kWh])
+		formatString: #,0.0" kWh"
+		displayFolder: 2 Product & ESG
+		lineageTag: 9bb71fe5-be78-4054-b715-b4384b5114d1
+
+	measure 'Avg Driving Range (km)' = AVERAGE(fact_deliveries[Range_km])
+		formatString: #,0" km"
+		displayFolder: 2 Product & ESG
+		lineageTag: 26b71f48-4501-451e-939c-ff8ee8afd8ff
+
+	measure 'Charging Stations' = VAR _LastDate = MAX(fact_deliveries[Date]) RETURN SUMX(VALUES(dim_region[Region]), CALCULATE(AVERAGE(fact_deliveries[Charging_Stations]), fact_deliveries[Date] = _LastDate))
+		formatString: #,0
+		displayFolder: 2 Product & ESG
+		lineageTag: c17f442f-13db-4d2c-9050-4c697df6c230
+
+	measure 'Estimated CO2 Savings (t)' = SUM(fact_deliveries[CO2_Saved_tons])
+		formatString: #,0
+		displayFolder: 2 Product & ESG
+		lineageTag: c80e25d8-2f77-443b-b697-db81384ccaf2
+
+	measure 'Estimated CO2 Savings (KPI)' = VAR v = SUM(fact_deliveries[CO2_Saved_tons]) RETURN IF(ISBLANK(v), BLANK(), SWITCH(TRUE(), v >= 1E9, FORMAT(v / 1E9, "#,0.0") & "B t", v >= 1E6, FORMAT(v / 1E6, "#,0.0") & "M t", v >= 1E3, FORMAT(v / 1E3, "#,0.0") & "K t", FORMAT(v, "#,0") & " t"))
+		displayFolder: 2 Product & ESG
+		lineageTag: 0cdad850-8485-406c-b356-62a03095e8c0
+
+	measure Records = COUNTROWS(fact_deliveries)
+		formatString: #,0
+		displayFolder: 2 Product & ESG
+		lineageTag: 9a17ba2f-f08a-4e3e-8673-eed66c80cb15
+
+	column DeliveryID
+		dataType: int64
+		formatString: 0
+		lineageTag: 791ce036-c3b5-4e5a-9a35-b510d7f5e41a
+		summarizeBy: count
+		sourceColumn: DeliveryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: b969e579-42ab-4360-abad-7f6c33f8438b
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModelKey
+		dataType: int64
+		formatString: 0
+		lineageTag: c9222d8c-4bd7-424c-a6c9-5bb5bbe0fcb1
+		summarizeBy: none
+		sourceColumn: ModelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 72bafed4-9980-4142-baab-4933d623cd39
+		summarizeBy: none
+		sourceColumn: RegionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 23f59657-ba3f-49f6-bedb-697b45f9c417
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: eb38c710-5e9f-4695-baef-e2a1aa037cef
+			defaultHierarchy: LocalDateTable_9c8b62ce-12d0-476c-ab81-be73061322ed.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 5bc7a52d-5ec5-4948-93d0-912b78e7410b
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 53e60939-dc65-4c7c-b9c1-98bf670f0e49
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: c915cea4-f0a9-4657-a010-ea6d05eac44e
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Model
+		dataType: string
+		lineageTag: 8ebdf627-85f9-4814-a16b-58fc1311c6aa
+		summarizeBy: none
+		sourceColumn: Model
+
+		annotation SummarizationSetBy = Automatic
+
+	column Business_Segment
+		dataType: string
+		lineageTag: 0d67bb90-f106-40d8-a0f2-9826d5bc568a
+		summarizeBy: none
+		sourceColumn: Business_Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Estimated_Deliveries
+		dataType: int64
+		formatString: 0
+		lineageTag: 4dc08623-ac2c-4cd6-9def-7ba1f26fe3f9
+		summarizeBy: sum
+		sourceColumn: Estimated_Deliveries
+
+		annotation SummarizationSetBy = Automatic
+
+	column Production_Units
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a755563-6d4e-4f67-bb26-ce5b8de4715f
+		summarizeBy: sum
+		sourceColumn: Production_Units
+
+		annotation SummarizationSetBy = Automatic
+
+	column Avg_Price_USD
+		dataType: double
+		lineageTag: 93c72775-5b84-4cfe-9769-3db887d5f719
+		summarizeBy: sum
+		sourceColumn: Avg_Price_USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Est_Revenue_USD
+		dataType: double
+		lineageTag: bad5079d-e9b0-4251-9cc1-599f8565c4bc
+		summarizeBy: sum
+		sourceColumn: Est_Revenue_USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Inventory_Gap
+		dataType: int64
+		formatString: 0
+		lineageTag: 538b0517-e0f4-4634-b523-84d8af4acc21
+		summarizeBy: sum
+		sourceColumn: Inventory_Gap
+
+		annotation SummarizationSetBy = Automatic
+
+	column Delivery_Efficiency
+		dataType: double
+		lineageTag: 60fc6966-021e-4934-a01d-99fa51f1118c
+		summarizeBy: sum
+		sourceColumn: Delivery_Efficiency
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Battery_Capacity_kWh
+		dataType: int64
+		formatString: 0
+		lineageTag: f9baabe4-6e9a-4902-9d13-5bc7681c3d57
+		summarizeBy: sum
+		sourceColumn: Battery_Capacity_kWh
+
+		annotation SummarizationSetBy = Automatic
+
+	column Range_km
+		dataType: int64
+		formatString: 0
+		lineageTag: b91ff849-499e-4700-b230-ee0da031f26a
+		summarizeBy: sum
+		sourceColumn: Range_km
+
+		annotation SummarizationSetBy = Automatic
+
+	column Efficiency_km_per_kWh
+		dataType: double
+		lineageTag: f94c1a53-b2cb-4766-8992-56f57cb90149
+		summarizeBy: sum
+		sourceColumn: Efficiency_km_per_kWh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CO2_Saved_tons
+		dataType: double
+		lineageTag: f43fe668-ac55-4a6b-8035-2db2ba50ebfc
+		summarizeBy: sum
+		sourceColumn: CO2_Saved_tons
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Charging_Stations
+		dataType: int64
+		formatString: 0
+		lineageTag: cd800029-7e37-4f4d-9233-03a756ee56b2
+		summarizeBy: sum
+		sourceColumn: Charging_Stations
+
+		annotation SummarizationSetBy = Automatic
+
+	column Source_Type
+		dataType: string
+		lineageTag: 33f0443b-5af9-4e46-aaff-cfd34b2fd362
+		summarizeBy: none
+		sourceColumn: Source_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Delivery_Outlier
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ea35b48e-cb95-4d10-948d-70ba295853c3
+		summarizeBy: none
+		sourceColumn: Delivery_Outlier
+
+		annotation SummarizationSetBy = Automatic
+
+	column Delivery_Outlier_Group
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 96cf2b68-ca2b-420a-84e0-c67129e6380e
+		summarizeBy: none
+		sourceColumn: Delivery_Outlier_Group
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_deliveries = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("E:\tesla_gobal_deliveries_analytics\data\processed\fact_deliveries.csv"),[Delimiter=",", Columns=24, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"DeliveryID", Int64.Type}, {"DateKey", Int64.Type}, {"ModelKey", Int64.Type}, {"RegionKey", Int64.Type}, {"Date", type date}, {"Year", Int64.Type}, {"Month", Int64.Type}, {"Region", type text}, {"Model", type text}, {"Business_Segment", type text}, {"Estimated_Deliveries", Int64.Type}, {"Production_Units", Int64.Type}, {"Avg_Price_USD", type number}, {"Est_Revenue_USD", type number}, {"Inventory_Gap", Int64.Type}, {"Delivery_Efficiency", type number}, {"Battery_Capacity_kWh", Int64.Type}, {"Range_km", Int64.Type}, {"Efficiency_km_per_kWh", type number}, {"CO2_Saved_tons", type number}, {"Charging_Stations", Int64.Type}, {"Source_Type", type text}, {"Delivery_Outlier", type logical}, {"Delivery_Outlier_Group", type logical}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

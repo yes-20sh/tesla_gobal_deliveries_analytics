@@ -1,0 +1,22 @@
+relationship 756a2cdf-ec88-4cce-9533-97588751ac6b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_date.Date
+	toColumn: LocalDateTable_93df1211-9b88-444c-b199-6f299273d5bf.Date
+
+relationship eb38c710-5e9f-4695-baef-e2a1aa037cef
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_deliveries.Date
+	toColumn: LocalDateTable_9c8b62ce-12d0-476c-ab81-be73061322ed.Date
+
+relationship AutoDetected_b951ef33-1206-4fa2-a317-4f945fac5289
+	fromColumn: fact_deliveries.DateKey
+	toColumn: dim_date.DateKey
+
+relationship AutoDetected_0f407b8a-ca80-4bb9-b69f-0be865e5fe0b
+	fromColumn: fact_deliveries.ModelKey
+	toColumn: dim_model.ModelKey
+
+relationship AutoDetected_eb881bd6-56ca-4bbd-b073-60b87579eb8f
+	fromColumn: fact_deliveries.RegionKey
+	toColumn: dim_region.RegionKey
+

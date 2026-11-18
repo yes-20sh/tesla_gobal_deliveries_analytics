@@ -1,0 +1,123 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.3.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "Fluent2-CY26SU10",
+      "reportVersionAtImport": {
+        "visual": "2.14.0",
+        "report": "3.4.0",
+        "page": "2.3.1"
+      },
+      "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Tesla_Dark2850052636500705.json",
+      "reportVersionAtImport": {
+        "visual": "2.14.0",
+        "report": "3.4.0",
+        "page": "2.3.1"
+      },
+      "type": "RegisteredResources"
+    }
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "Fluent2-CY26SU10",
+          "path": "BaseThemes/Fluent2-CY26SU10.json",
+          "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "1_Tesla_Background_Only17100566953510465.png",
+          "path": "1_Tesla_Background_Only17100566953510465.png",
+          "type": "Image"
+        },
+        {
+          "name": "3_Tesla_Cover_Page11576450665379867.png",
+          "path": "3_Tesla_Cover_Page11576450665379867.png",
+          "type": "Image"
+        },
+        {
+          "name": "icon_bolt2290176654.png",
+          "path": "icon_bolt2290176654.png",
+          "type": "Image"
+        },
+        {
+          "name": "icon_database5586129073.png",
+          "path": "icon_database5586129073.png",
+          "type": "Image"
+        },
+        {
+          "name": "icon_globe7731502846.png",
+          "path": "icon_globe7731502846.png",
+          "type": "Image"
+        },
+        {
+          "name": "icon_leaf4417280931.png",
+          "path": "icon_leaf4417280931.png",
+          "type": "Image"
+        },
+        {
+          "name": "right-up_(1)03618746553696561.png",
+          "path": "right-up_(1)03618746553696561.png",
+          "type": "Image"
+        },
+        {
+          "name": "Tesla_Dark2850052636500705.json",
+          "path": "Tesla_Dark2850052636500705.json",
+          "type": "CustomTheme"
+        },
+        {
+          "name": "Tesla_logo8079147937425267.png",
+          "path": "Tesla_logo8079147937425267.png",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  }
+}
